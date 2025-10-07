@@ -1,187 +1,511 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CheckListe Classe</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Classe-Pro</title>
 <style>
-  body {
-    background: #0b0f19;
-    color: #f5f5f5;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  :root{
+    --bg:#0b0f16; --card:#10151b; --accent:#00e6c3; --muted:#9aa6b2; --danger:#ff6b6b;
+    --glass: rgba(255,255,255,0.03);
+    --radius:14px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; background: linear-gradient(180deg,#071021 0%, #0b0f16 60%); color:#e6f3f1;
+    display:flex; flex-direction:column; align-items:center; padding:18px;
   }
 
-  h1 {
-    margin-top: 30px;
-    color: #00ffe5;
-    text-shadow: 0 0 10px #00ffe5;
+  header{
+    width:100%; max-width:1200px; display:flex; gap:12px; align-items:center; justify-content:space-between;
+    margin-bottom:18px;
+  }
+  .brand{display:flex; gap:12px; align-items:center}
+  .logo{
+    width:56px; height:56px; background:linear-gradient(135deg,var(--accent),#7af1ff); border-radius:12px;
+    display:flex; align-items:center; justify-content:center; color:#032226; font-weight:800; font-size:18px; box-shadow:0 6px 18px rgba(0,0,0,0.6);
+  }
+  h1{margin:0; font-size:20px; letter-spacing:0.4px}
+  .controls{display:flex; gap:8px; align-items:center}
+
+  .btn{
+    background:var(--glass); border:1px solid rgba(255,255,255,0.04); padding:8px 10px; border-radius:10px; color:var(--accent);
+    cursor:pointer; font-weight:600; transition:all .15s; backdrop-filter: blur(4px);
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.45)}
+  .btn.ghost{color:#cfeee6; background:transparent; border:1px dashed rgba(255,255,255,0.03)}
+  .btn.danger{color:#fff; background:linear-gradient(90deg,var(--danger),#ff8a8a); border:none}
+
+  main{width:100%; max-width:1200px; display:grid; grid-template-columns: 1fr 360px; gap:18px; align-items:start;}
+
+  /* left: board */
+  .board{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:16px; border-radius:var(--radius);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6); border: 1px solid rgba(255,255,255,0.03);
+  }
+  .topbar{display:flex; gap:8px; align-items:center; margin-bottom:12px}
+  select, input[type="text"], input[type="number"]{
+    background:transparent; border:1px solid rgba(255,255,255,0.04); color:inherit; padding:8px; border-radius:10px;
+  }
+  .small{font-size:13px; padding:6px 8px}
+  .grid{
+    overflow:auto; max-height:62vh; border-radius:10px; padding:8px; background:linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.06));
   }
 
-  .container {
-    background: #1b2130;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00ffe566;
-    width: 90%;
-    max-width: 600px;
-    margin-top: 20px;
-  }
+  table{border-collapse:collapse; width:100%; min-width:700px;}
+  th, td{padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.03); text-align:left; vertical-align:middle}
+  th{position:sticky; top:0; background:linear-gradient(180deg, rgba(0,0,0,0.25), transparent); font-size:13px}
+  td.studentName{font-weight:700; width:220px}
+  .checkboxCell{width:80px; text-align:center}
+  input[type=checkbox]{width:18px; height:18px}
 
-  .list-selector {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
+  .muted{color:var(--muted); font-size:13px}
+  .progressRow{display:flex; gap:8px; align-items:center; margin-top:8px}
+  .progressBar{flex:1; background:rgba(255,255,255,0.05); height:10px; border-radius:999px; overflow:hidden}
+  .progressFill{height:100%; background:linear-gradient(90deg,var(--accent),#7af1ff); width:0%}
 
-  input, select, button {
-    background: #0f1524;
-    border: none;
-    color: #fff;
-    padding: 10px;
-    border-radius: 8px;
+  /* right: tools */
+  .tools{
+    display:flex; flex-direction:column; gap:12px;
   }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px; border-radius:12px;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .messageArea{min-height:80px; display:flex; align-items:center; justify-content:center; border-radius:8px; padding:10px; font-size:20px; text-align:center}
+  textarea{width:100%; min-height:70px; background:transparent; border-radius:8px; color:inherit; padding:8px; border:1px solid rgba(255,255,255,0.04)}
 
-  button {
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  button:hover {
-    background: #00ffe5;
-    color: #000;
-  }
+  .timerDisplay{font-size:28px; font-weight:700; text-align:center; margin:8px 0}
+  .timerControls{display:flex; gap:8px; justify-content:center}
 
-  .student {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    background: #101626;
-    padding: 10px;
-    border-radius: 8px;
-  }
+  .smallMuted{font-size:12px; color:var(--muted)}
 
-  .checkboxes {
-    display: flex;
-    gap: 10px;
-  }
-
-  .checkboxes label {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .add-student {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-  }
-
-  .save {
-    margin-top: 15px;
-    width: 100%;
-    background: #00ffe5;
-    color: #000;
+  footer{margin-top:18px; color:var(--muted); font-size:13px}
+  @media (max-width:980px){
+    main{grid-template-columns: 1fr; }
+    table{min-width:600px}
   }
 </style>
 </head>
 <body>
-
-<h1>📋 CheckListe Classe</h1>
-<div class="container">
-  <div class="list-selector">
-    <select id="listSelect"></select>
-    <input id="newListName" type="text" placeholder="Nouvelle liste...">
-    <button onclick="createNewList()">Créer</button>
+<header>
+  <div class="brand">
+    <div class="logo">CP</div>
+    <div>
+      <h1>Classe-Pro</h1>
+      <div class="smallMuted">Gestion locale des classes · sauvegarde dans localStorage</div>
+    </div>
   </div>
 
-  <div id="students"></div>
-
-  <div class="add-student">
-    <input id="studentName" type="text" placeholder="Nom de l'élève">
-    <button onclick="addStudent()">Ajouter</button>
+  <div class="controls">
+    <button class="btn ghost" id="exportBtn" title="Exporter JSON">Exporter</button>
+    <button class="btn ghost" id="importBtn" title="Importer JSON">Importer</button>
+    <button class="btn" id="clearAllBtn" title="Effacer tout">Effacer tout</button>
   </div>
+</header>
 
-  <button class="save" onclick="saveData()">💾 Sauvegarder</button>
-</div>
+<main>
+  <section class="board card">
+    <div class="topbar">
+      <select id="classSelect" class="small"></select>
+      <input id="newClassName" type="text" placeholder="Nouvelle classe..." class="small" />
+      <button class="btn small" id="createClassBtn">Créer</button>
+      <button class="btn small" id="renameClassBtn">Renommer</button>
+      <button class="btn small danger" id="deleteClassBtn">Supprimer</button>
+    </div>
+
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+      <input id="studentNameInput" type="text" placeholder="Ajouter élève (nom)" style="flex:1"/>
+      <button class="btn" id="addStudentBtn">Ajouter élève</button>
+      <input id="assignNameInput" type="text" placeholder="Nouvel devoir (ex: Devoir 1)" style="width:170px"/>
+      <button class="btn" id="addAssignBtn">Ajouter devoir</button>
+      <button class="btn ghost" id="removeAssignBtn">Suppr. dernière</button>
+    </div>
+
+    <div class="grid" id="gridContainer">
+      <table id="classTable">
+        <!-- generated -->
+      </table>
+    </div>
+
+    <div class="progressRow">
+      <div class="muted">Progress global :</div>
+      <div class="progressBar"><div class="progressFill" id="globalProgress"></div></div>
+      <div id="globalPercent" class="muted">0%</div>
+    </div>
+  </section>
+
+  <aside class="tools">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong>Message board</strong>
+        <div class="smallMuted">Visible en haut</div>
+      </div>
+      <div id="displayMessage" class="messageArea" style="background:linear-gradient(90deg, rgba(0,230,195,0.06), rgba(122,241,255,0.02)); color:var(--accent); font-weight:700;">
+        Tapez un message...
+      </div>
+      <textarea id="messageInput" placeholder="Écrire un message qui s'affichera en grand"></textarea>
+      <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
+        <button class="btn" id="saveMsgBtn">Mettre à jour</button>
+        <button class="btn ghost" id="clearMsgBtn">Effacer</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <strong>Chronomètre</strong>
+      <div id="stopwatch" class="timerDisplay">00:00:00</div>
+      <div class="timerControls">
+        <button class="btn" id="swStart">Start</button>
+        <button class="btn ghost" id="swStop">Stop</button>
+        <button class="btn" id="swReset">Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <strong>Minuteur</strong>
+      <div style="display:flex; gap:8px; align-items:center; margin-top:8px;">
+        <input id="timerMin" type="number" min="0" placeholder="min" style="width:80px"/>
+        <input id="timerSec" type="number" min="0" max="59" placeholder="sec" style="width:80px"/>
+        <button class="btn" id="startTimerBtn">Démarrer</button>
+        <button class="btn ghost" id="stopTimerBtn">Arrêter</button>
+      </div>
+      <div id="countdown" class="timerDisplay" style="margin-top:12px">00:00</div>
+    </div>
+
+    <div class="card">
+      <strong>Importer / Exporter</strong>
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <input id="fileInput" type="file" accept="application/json" style="flex:1"/>
+      </div>
+      <div class="smallMuted" style="margin-top:8px">Exporter pour sauvegarder hors-ligne, importer pour restaurer.</div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div>Classe-Pro · Sauvegarde locale · Aucun compte requis</div>
+</footer>
 
 <script>
-  let data = JSON.parse(localStorage.getItem('classLists')) || {};
-  const listSelect = document.getElementById('listSelect');
-  const studentsDiv = document.getElementById('students');
+/* ========================
+   Data model & storage
+   ======================== */
+const STORAGE_KEY = 'classepro_v1';
+let state = {
+  classes: {}, // { className: { students:[{name, checks:[]},...], assigns: [assign1,assign2,...], message:'' } }
+  currentClass: null
+};
 
-  function updateSelect() {
-    listSelect.innerHTML = '';
-    Object.keys(data).forEach(listName => {
-      const opt = document.createElement('option');
-      opt.value = listName;
-      opt.textContent = listName;
-      listSelect.appendChild(opt);
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) state = JSON.parse(raw);
+  }catch(e){ console.error('loadState', e) }
+  // ensure at least one class
+  if(!state.currentClass || !state.classes[state.currentClass]) {
+    const defaultName = Object.keys(state.classes)[0] || 'Classe 1';
+    if(!state.classes[defaultName]) {
+      state.classes[defaultName] = { students: [], assigns: [], message: 'Bienvenue sur Classe-Pro' };
+    }
+    state.currentClass = defaultName;
+    saveState();
+  }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ console.error('saveState', e) }
+}
+
+/* =======================
+   UI helpers
+   ======================= */
+const classSelect = document.getElementById('classSelect');
+const classTable = document.getElementById('classTable');
+const gridContainer = document.getElementById('gridContainer');
+const studentNameInput = document.getElementById('studentNameInput');
+const assignNameInput = document.getElementById('assignNameInput');
+const globalProgress = document.getElementById('globalProgress');
+const globalPercent = document.getElementById('globalPercent');
+
+function refreshClassSelect(){
+  classSelect.innerHTML = '';
+  Object.keys(state.classes).forEach(name => {
+    const opt = document.createElement('option'); opt.value = name; opt.textContent = name;
+    classSelect.appendChild(opt);
+  });
+  classSelect.value = state.currentClass;
+}
+
+/* render table */
+function renderTable(){
+  const cls = state.classes[state.currentClass];
+  classTable.innerHTML = '';
+  // header
+  const thead = document.createElement('thead');
+  const hrow = document.createElement('tr');
+  const thName = document.createElement('th'); thName.textContent = 'Élèves'; hrow.appendChild(thName);
+  cls.assigns.forEach((a, idx) => {
+    const th = document.createElement('th'); th.innerHTML = `${a} <div class="smallMuted" style="font-weight:600;margin-top:6px">` +
+      `${countCheckedForAssign(idx)}/${cls.students.length}</div>`;
+    hrow.appendChild(th);
+  });
+  const thActions = document.createElement('th'); thActions.textContent = 'Actions'; hrow.appendChild(thActions);
+  thead.appendChild(hrow);
+  classTable.appendChild(thead);
+
+  // body
+  const tbody = document.createElement('tbody');
+  cls.students.forEach((s, i) => {
+    const tr = document.createElement('tr');
+    const tdName = document.createElement('td'); tdName.className='studentName';
+    tdName.innerHTML = `<span>${escapeHtml(s.name)}</span><div class="smallMuted" style="font-weight:400">${completedCount(s)} / ${cls.assigns.length} complété</div>`;
+    tr.appendChild(tdName);
+
+    // checks
+    cls.assigns.forEach((a, j) => {
+      const td = document.createElement('td'); td.className='checkboxCell';
+      const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!s.checks[j];
+      cb.addEventListener('change', ()=> {
+        s.checks[j] = cb.checked;
+        saveState(); renderTable(); updateProgress();
+      });
+      td.appendChild(cb);
+      tr.appendChild(td);
     });
-    if (listSelect.value) loadList();
-  }
 
-  function createNewList() {
-    const name = document.getElementById('newListName').value.trim();
-    if (!name || data[name]) return alert('Nom invalide ou déjà existant');
-    data[name] = [];
-    document.getElementById('newListName').value = '';
-    saveData();
-    updateSelect();
-    listSelect.value = name;
-    loadList();
-  }
-
-  function addStudent() {
-    const name = document.getElementById('studentName').value.trim();
-    if (!name) return;
-    const listName = listSelect.value;
-    data[listName].push({ name, checks: [false, false, false] });
-    document.getElementById('studentName').value = '';
-    renderStudents();
-  }
-
-  function renderStudents() {
-    const listName = listSelect.value;
-    studentsDiv.innerHTML = '';
-    if (!listName) return;
-    data[listName].forEach((student, i) => {
-      const div = document.createElement('div');
-      div.className = 'student';
-      div.innerHTML = `
-        <span>${student.name}</span>
-        <div class="checkboxes">
-          ${student.checks.map((checked, j) =>
-            `<label><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCheck(${i},${j})">✔</label>`
-          ).join('')}
-        </div>
-      `;
-      studentsDiv.appendChild(div);
+    // actions
+    const tdAct = document.createElement('td');
+    const del = document.createElement('button'); del.className='btn ghost small'; del.textContent='Suppr';
+    del.addEventListener('click', ()=> {
+      if(confirm('Supprimer élève "'+s.name+'"?')) {
+        cls.students.splice(i,1); saveState(); renderTable(); updateProgress();
+      }
     });
-  }
+    tdAct.appendChild(del);
+    tr.appendChild(tdAct);
 
-  function toggleCheck(i, j) {
-    const listName = listSelect.value;
-    data[listName][i].checks[j] = !data[listName][i].checks[j];
-  }
+    tbody.appendChild(tr);
+  });
+  classTable.appendChild(tbody);
+  updateProgress();
+}
 
-  function saveData() {
-    localStorage.setItem('classLists', JSON.stringify(data));
-    alert('Données sauvegardées ✅');
-  }
+/* ==========================
+   Progress / counts utils
+   ========================== */
+function completedCount(student){
+  return (student.checks || []).reduce((a,b)=> a + (b?1:0), 0);
+}
+function countCheckedForAssign(assignIndex){
+  const cls = state.classes[state.currentClass];
+  if(!cls) return 0;
+  return cls.students.reduce((acc,s)=> acc + (s.checks[assignIndex] ? 1 : 0), 0);
+}
+function updateProgress(){
+  const cls = state.classes[state.currentClass];
+  if(!cls) return;
+  const totalCells = cls.students.length * Math.max(1, cls.assigns.length);
+  const checked = cls.students.reduce((acc,s)=> acc + (s.checks ? s.checks.filter(Boolean).length : 0), 0);
+  const pct = totalCells === 0 ? 0 : Math.round((checked/totalCells)*100);
+  globalProgress.style.width = pct + '%';
+  globalPercent.textContent = pct + '%';
+  saveState();
+}
 
-  function loadList() {
-    renderStudents();
+/* ==========================
+   Actions (classes / students / assigns)
+   ========================== */
+document.getElementById('createClassBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('newClassName').value.trim() || prompt('Nom classe ?','Classe');
+  if(!name) return;
+  if(state.classes[name]) return alert('Nom déjà existant');
+  state.classes[name] = { students: [], assigns: [], message: 'Tapez votre message ici' };
+  state.currentClass = name;
+  document.getElementById('newClassName').value='';
+  refreshClassSelect(); renderTable(); saveState();
+});
+document.getElementById('renameClassBtn').addEventListener('click', ()=>{
+  const old = state.currentClass;
+  const name = prompt('Nouveau nom pour la classe', old);
+  if(!name || name===old) return;
+  if(state.classes[name]) return alert('Nom déjà utilisé');
+  state.classes[name] = state.classes[old];
+  delete state.classes[old];
+  state.currentClass = name;
+  refreshClassSelect(); renderTable(); saveState();
+});
+document.getElementById('deleteClassBtn').addEventListener('click', ()=>{
+  const c = state.currentClass;
+  if(!confirm(`Supprimer la classe "${c}" (toutes les données seront perdues) ?`)) return;
+  delete state.classes[c];
+  const names = Object.keys(state.classes);
+  state.currentClass = names[0] || null;
+  if(!state.currentClass){
+    state.classes['Classe 1'] = { students: [], assigns: [], message:'Bienvenue' };
+    state.currentClass = 'Classe 1';
   }
+  refreshClassSelect(); renderTable(); saveState();
+});
+classSelect.addEventListener('change', ()=>{
+  state.currentClass = classSelect.value;
+  renderMessage(); renderTable();
+  saveState();
+});
 
-  listSelect.addEventListener('change', loadList);
-  updateSelect();
+document.getElementById('addStudentBtn').addEventListener('click', ()=>{
+  const name = studentNameInput.value.trim();
+  if(!name) return alert('Donne un nom');
+  const cls = state.classes[state.currentClass];
+  const newStudent = { name, checks: Array(cls.assigns.length).fill(false) };
+  cls.students.push(newStudent);
+  studentNameInput.value='';
+  renderTable(); saveState();
+});
+
+document.getElementById('addAssignBtn').addEventListener('click', ()=>{
+  const name = assignNameInput.value.trim() || prompt('Nom du devoir?','Devoir');
+  if(!name) return;
+  const cls = state.classes[state.currentClass];
+  cls.assigns.push(name);
+  // add false entry for all students
+  cls.students.forEach(s => s.checks.push(false));
+  assignNameInput.value='';
+  renderTable(); saveState();
+});
+document.getElementById('removeAssignBtn').addEventListener('click', ()=>{
+  const cls = state.classes[state.currentClass];
+  if(cls.assigns.length===0) return;
+  if(!confirm('Supprimer le dernier devoir "'+cls.assigns[cls.assigns.length-1]+'"?')) return;
+  cls.assigns.pop();
+  cls.students.forEach(s => s.checks.pop());
+  renderTable(); saveState();
+});
+
+/* ==========================
+   Message board
+   ========================== */
+const messageInput = document.getElementById('messageInput');
+const displayMessage = document.getElementById('displayMessage');
+document.getElementById('saveMsgBtn').addEventListener('click', ()=>{
+  const cls = state.classes[state.currentClass];
+  cls.message = messageInput.value;
+  renderMessage();
+  saveState();
+});
+document.getElementById('clearMsgBtn').addEventListener('click', ()=>{
+  const cls = state.classes[state.currentClass];
+  cls.message = '';
+  messageInput.value='';
+  renderMessage();
+  saveState();
+});
+function renderMessage(){
+  const cls = state.classes[state.currentClass];
+  displayMessage.textContent = cls.message || 'Tapez un message...';
+  messageInput.value = cls.message || '';
+}
+
+/* ==========================
+   Export / Import
+   ========================== */
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const dataStr = JSON.stringify(state, null, 2);
+  const blob = new Blob([dataStr], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'classepro-export.json'; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+});
+document.getElementById('importBtn').addEventListener('click', ()=> document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change', (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const reader = new FileReader();
+  reader.onload = ()=> {
+    try{
+      const obj = JSON.parse(reader.result);
+      if(confirm('Remplacer l\'état actuel par le fichier importé ?')) {
+        state = obj;
+        if(!state.currentClass || !state.classes[state.currentClass]) {
+          state.currentClass = Object.keys(state.classes)[0] || null;
+        }
+        refreshClassSelect(); renderTable(); renderMessage(); saveState();
+      }
+    }catch(err){ alert('Fichier JSON invalide'); }
+  };
+  reader.readAsText(f);
+});
+
+/* clear all */
+document.getElementById('clearAllBtn').addEventListener('click', ()=>{
+  if(!confirm('Effacer toutes les données locales (localStorage) ?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  // reset state
+  state = { classes: { 'Classe 1': { students: [], assigns: [], message:'Bienvenue' } }, currentClass: 'Classe 1' };
+  refreshClassSelect(); renderTable(); renderMessage();
+});
+
+/* ==========================
+   Stopwatch (chronomètre)
+   ========================== */
+let swInterval=null, swStartTime=0, swElapsed=0;
+const swDisplay = document.getElementById('stopwatch');
+function formatHMS(ms){
+  const s = Math.floor(ms/1000);
+  const hh = Math.floor(s/3600), mm = Math.floor((s%3600)/60), ss = s%60;
+  return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+}
+document.getElementById('swStart').addEventListener('click', ()=>{
+  if(swInterval) return;
+  swStartTime = Date.now() - swElapsed;
+  swInterval = setInterval(()=> {
+    swElapsed = Date.now() - swStartTime;
+    swDisplay.textContent = formatHMS(swElapsed);
+  }, 200);
+});
+document.getElementById('swStop').addEventListener('click', ()=>{
+  if(swInterval) { clearInterval(swInterval); swInterval=null; saveState(); }
+});
+document.getElementById('swReset').addEventListener('click', ()=>{
+  swElapsed=0; swStartTime=0;
+  if(swInterval){ clearInterval(swInterval); swInterval=null; }
+  swDisplay.textContent = '00:00:00';
+});
+
+/* ==========================
+   Timer (countdown)
+   ========================== */
+let timerInterval=null, timerRemaining=0;
+const countdown = document.getElementById('countdown');
+function formatMS(ms){
+  const s = Math.ceil(ms/1000);
+  const mm = Math.floor(s/60), ss = s%60;
+  return `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+}
+document.getElementById('startTimerBtn').addEventListener('click', ()=>{
+  const m = parseInt(document.getElementById('timerMin').value) || 0;
+  const s = parseInt(document.getElementById('timerSec').value) || 0;
+  timerRemaining = (m*60 + s) * 1000;
+  if(timerRemaining <= 0) return alert('Entrer une durée > 0');
+  if(timerInterval) clearInterval(timerInterval);
+  const end = Date.now() + timerRemaining;
+  timerInterval = setInterval(()=> {
+    timerRemaining = end - Date.now();
+    if(timerRemaining <= 0) { clearInterval(timerInterval); timerInterval=null; countdown.textContent='00:00'; alert('Temps écoulé !'); return; }
+    countdown.textContent = formatMS(timerRemaining);
+  }, 200);
+});
+document.getElementById('stopTimerBtn').addEventListener('click', ()=>{
+  if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
+});
+
+/* ==========================
+   Utilities & init
+   ========================== */
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, (m)=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+loadState(); refreshClassSelect(); renderMessage(); renderTable();
+
+/* autosave every 5s to be safe */
+setInterval(()=> saveState(), 5000);
 </script>
-
 </body>
 </html>
