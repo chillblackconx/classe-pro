@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CheckListe Classe</title>
+<style>
+  body {
+    background: #0b0f19;
+    color: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    margin-top: 30px;
+    color: #00ffe5;
+    text-shadow: 0 0 10px #00ffe5;
+  }
+
+  .container {
+    background: #1b2130;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00ffe566;
+    width: 90%;
+    max-width: 600px;
+    margin-top: 20px;
+  }
+
+  .list-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
+  input, select, button {
+    background: #0f1524;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  button {
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #00ffe5;
+    color: #000;
+  }
+
+  .student {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    background: #101626;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .checkboxes {
+    display: flex;
+    gap: 10px;
+  }
+
+  .checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .add-student {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .save {
+    margin-top: 15px;
+    width: 100%;
+    background: #00ffe5;
+    color: #000;
+  }
+</style>
+</head>
+<body>
+
+<h1>📋 CheckListe Classe</h1>
+<div class="container">
+  <div class="list-selector">
+    <select id="listSelect"></select>
+    <input id="newListName" type="text" placeholder="Nouvelle liste...">
+    <button onclick="createNewList()">Créer</button>
+  </div>
+
+  <div id="students"></div>
+
+  <div class="add-student">
+    <input id="studentName" type="text" placeholder="Nom de l'élève">
+    <button onclick="addStudent()">Ajouter</button>
+  </div>
+
+  <button class="save" onclick="saveData()">💾 Sauvegarder</button>
+</div>
+
+<script>
+  let data = JSON.parse(localStorage.getItem('classLists')) || {};
+  const listSelect = document.getElementById('listSelect');
+  const studentsDiv = document.getElementById('students');
+
+  function updateSelect() {
+    listSelect.innerHTML = '';
+    Object.keys(data).forEach(listName => {
+      const opt = document.createElement('option');
+      opt.value = listName;
+      opt.textContent = listName;
+      listSelect.appendChild(opt);
+    });
+    if (listSelect.value) loadList();
+  }
+
+  function createNewList() {
+    const name = document.getElementById('newListName').value.trim();
+    if (!name || data[name]) return alert('Nom invalide ou déjà existant');
+    data[name] = [];
+    document.getElementById('newListName').value = '';
+    saveData();
+    updateSelect();
+    listSelect.value = name;
+    loadList();
+  }
+
+  function addStudent() {
+    const name = document.getElementById('studentName').value.trim();
+    if (!name) return;
+    const listName = listSelect.value;
+    data[listName].push({ name, checks: [false, false, false] });
+    document.getElementById('studentName').value = '';
+    renderStudents();
+  }
+
+  function renderStudents() {
+    const listName = listSelect.value;
+    studentsDiv.innerHTML = '';
+    if (!listName) return;
+    data[listName].forEach((student, i) => {
+      const div = document.createElement('div');
+      div.className = 'student';
+      div.innerHTML = `
+        <span>${student.name}</span>
+        <div class="checkboxes">
+          ${student.checks.map((checked, j) =>
+            `<label><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCheck(${i},${j})">✔</label>`
+          ).join('')}
+        </div>
+      `;
+      studentsDiv.appendChild(div);
+    });
+  }
+
+  function toggleCheck(i, j) {
+    const listName = listSelect.value;
+    data[listName][i].checks[j] = !data[listName][i].checks[j];
+  }
+
+  function saveData() {
+    localStorage.setItem('classLists', JSON.stringify(data));
+    alert('Données sauvegardées ✅');
+  }
+
+  function loadList() {
+    renderStudents();
+  }
+
+  listSelect.addEventListener('change', loadList);
+  updateSelect();
+</script>
+
+</body>
+</html>
