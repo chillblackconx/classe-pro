@@ -5,22 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Classe-Pro — Liste de tâches</title>
 
-<!-- FAVICON: CP (SVG inline, pas de fichier externe) -->
+<!-- Favicon: CP inline SVG -->
 <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
   <text x="50%" y="50%" font-size="48" font-family="Inter,Arial" fill="#00e6c3" font-weight="800" text-anchor="middle" dominant-baseline="middle">CP</text>
 </svg>'>
 
 <style>
-/* =========================
-   THEME / VARIABLES (FR/EN comments)
-   ========================= */
 :root{
   --bg-1:#07101a; --bg-2:#08121b;
-  --accent:#00e6c3; --accent2:#6ff0ff;
-  --muted:#9fb0b6; --danger:#ff6b6b;
-  --radius:12px;
-  --neon:0 6px 30px rgba(0,230,195,0.08);
+  --accent:#00e6c3; --accent2:#6ff0ff; --muted:#9fb0b6; --danger:#ff6b6b;
+  --radius:12px; --neon:0 6px 30px rgba(0,230,195,0.08);
   font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;
 }
 *{box-sizing:border-box}
@@ -29,26 +24,19 @@ body{
   margin:0; min-height:100vh; padding:18px;
   background: radial-gradient(1000px 500px at 10% 10%, rgba(0,120,255,0.06), transparent),
               linear-gradient(180deg,var(--bg-1),var(--bg-2));
-  color:#e6fbf6;
-  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  color:#e6fbf6; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
   display:flex; flex-direction:column; align-items:center;
 }
 
-/* header */
-header{
-  width:100%; max-width:1200px; display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;
-  position:relative;
-}
+/* HEADER */
+header{width:100%; max-width:1200px; display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; position:relative;}
 .brand{display:flex; gap:12px; align-items:center}
-.logo{
-  width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800;
-  background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#022b29; box-shadow:var(--neon);
-}
+.logo{width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#022b29; box-shadow:var(--neon)}
 .title-block{display:flex; flex-direction:column}
 h1{margin:0; font-size:20px}
 .sub{color:var(--muted); font-size:13px}
 
-/* top controls */
+/* TOP CONTROLS */
 .top-controls{display:flex; gap:10px; align-items:center}
 .btn{
   padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04);
@@ -60,27 +48,30 @@ h1{margin:0; font-size:20px}
 .btn.danger{background:linear-gradient(90deg,var(--danger),#ff8a8a); color:#fff; border:none}
 .small{font-size:13px; padding:6px 10px}
 
-/* fullscreen control (top-right icon) */
+/* LANG BUTTON (flag) */
+#langBtn{display:flex; align-items:center; gap:6px; padding:6px 8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.04); cursor:pointer; color:var(--accent)}
+
+/* FULLSCREEN BUTTON (fixed top-right) */
 #fsBtn{
-  position:fixed; right:18px; top:18px;
+  position:fixed; right:18px; top:18px; z-index:60;
   width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
   border:1px solid rgba(255,255,255,0.04); background:transparent; color:var(--accent); cursor:pointer;
   box-shadow: 0 6px 24px rgba(0,0,0,0.45);
 }
 #fsBtn:hover{transform:translateY(-3px); background:rgba(0,230,195,0.04)}
 
-/* layout */
+/* LAYOUT */
 main{width:100%; max-width:1200px; display:grid; grid-template-columns:1fr 380px; gap:18px; align-items:start}
 .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.03)}
 .board{padding:12px}
 
-/* forms */
+/* FORMS */
 .controls-row{display:flex; gap:8px; align-items:center; margin-bottom:10px}
 select,input[type=text],input[type=number],textarea{background:transparent; border:1px solid rgba(255,255,255,0.04); color:inherit; padding:8px; border-radius:8px}
 .flex{display:flex; gap:8px; align-items:center}
 .grow{flex:1}
 
-/* table */
+/* TABLE */
 .grid{overflow:auto; max-height:62vh; border-radius:10px; padding:6px; margin-top:6px}
 table{border-collapse:collapse; width:100%; min-width:700px}
 th,td{padding:10px 12px; border-bottom:1px solid rgba(255,255,255,0.03); text-align:left}
@@ -89,22 +80,15 @@ td.name-col{width:260px; font-weight:700}
 td.task-col{text-align:center; width:100px}
 input[type=checkbox]{width:18px;height:18px; cursor:pointer; accent-color:var(--accent)}
 
-/* message + progress */
+/* MESSAGE & PROGRESS */
 .message-display{min-height:80px; display:flex; align-items:center; justify-content:center; border-radius:10px; padding:12px; font-size:20px; text-align:center; background: linear-gradient(90deg, rgba(0,230,195,0.04), rgba(122,241,255,0.02)); color:var(--accent)}
 .progressBar{height:10px; background:rgba(255,255,255,0.04); border-radius:999px; overflow:hidden}
 .progressFill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%}
 
-/* timers */
+/* TIMERS */
 .timer-large{font-size:28px; font-weight:800; text-align:center; margin:8px 0}
 
-/* drag & drop area */
-.drop-area{
-  margin-top:12px; padding:12px; border-radius:10px; border:2px dashed rgba(255,255,255,0.04);
-  display:flex; align-items:center; justify-content:center; color:var(--muted); background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-}
-.drop-area.dragover{background:rgba(0,230,195,0.02); color:var(--accent); border-color:rgba(0,230,195,0.12)}
-
-/* save toast */
+/* SAVE TOAST */
 .save-toast{
   position:fixed; right:24px; bottom:24px; background:linear-gradient(90deg, rgba(0,230,195,0.08), rgba(122,241,255,0.03));
   border:1px solid rgba(255,255,255,0.06); padding:12px 16px; border-radius:12px; color:var(--accent);
@@ -127,8 +111,8 @@ footer{margin-top:18px; color:var(--muted); font-size:13px; text-align:center}
   <div class="brand">
     <div class="logo">CP</div>
     <div class="title-block">
-      <h1>Classe-Pro — Liste de tâches</h1>
-      <div class="sub">Interface locale · sauvegarde stylée · thème 2049.space</div>
+      <h1 id="titleMain">Classe-Pro — Liste de tâches</h1>
+      <div class="sub" id="subtitle">Interface locale · sauvegarde stylée · thème 2049.space</div>
     </div>
   </div>
 
@@ -137,32 +121,29 @@ footer{margin-top:18px; color:var(--muted); font-size:13px; text-align:center}
     <button class="btn ghost small" id="importBtn">Import / Importer</button>
     <button class="btn small" id="clearAllBtn">Clear / Effacer tout</button>
 
-    <!-- language toggle -->
-    <select id="langSelect" class="small" title="Language / Langue">
-      <option value="fr">FR</option>
-      <option value="en">EN</option>
-    </select>
+    <!-- language button (flag) -->
+    <button id="langBtn" title="Change language / Changer langue">🇫🇷 <span id="langLabel">FR</span></button>
   </div>
 </header>
 
-<!-- fullscreen button (fixed, top-right) -->
+<!-- fullscreen icon button -->
 <button id="fsBtn" title="Plein écran / Fullscreen">⛶</button>
 
 <main>
   <!-- LEFT: board -->
   <section class="card board" id="boardCard">
     <div class="controls-row">
-      <select id="listSelect" class="small" aria-label="Select list"> </select>
-      <input id="newListName" type="text" placeholder="Nouvelle liste de tâches..." class="small" />
+      <select id="listSelect" class="small" aria-label="Select list"></select>
+      <input id="newListName" type="text" placeholder="Nouvelle liste de tâches..." class="small"/>
       <button class="btn small" id="createListBtn">Create / Créer</button>
       <button class="btn small" id="renameListBtn">Rename / Renommer</button>
       <button class="btn small danger" id="deleteListBtn">Delete / Supprimer</button>
     </div>
 
     <div style="display:flex; gap:8px; margin-bottom:8px; align-items:center">
-      <input id="studentNameInput" class="grow" type="text" placeholder="Ajouter personne (nom)">
-      <button class="btn" id="addStudentBtn">Add / Ajouter</button>
-      <input id="taskNameInput" type="text" placeholder="Nouvelle tâche (ex: Lecture)" style="width:160px">
+      <input id="personNameInput" class="grow" type="text" placeholder="Ajouter personne (nom)"/>
+      <button class="btn" id="addPersonBtn">Add / Ajouter</button>
+      <input id="taskNameInput" type="text" placeholder="Nouvelle tâche (ex: Lecture)" style="width:160px"/>
       <button class="btn" id="addTaskBtn">Add task / Ajouter tâche</button>
       <button class="btn ghost" id="removeTaskBtn">Remove last / Suppr. dernière</button>
     </div>
@@ -177,11 +158,6 @@ footer{margin-top:18px; color:var(--muted); font-size:13px; text-align:center}
         <div class="progressBar" style="margin-top:8px"><div class="progressFill" id="globalProgress"></div></div>
       </div>
       <div id="globalPercent" class="muted" style="width:60px; text-align:right">0%</div>
-    </div>
-
-    <!-- Drop area for 1 plan de travail -->
-    <div id="dropArea" class="drop-area" title="Drag & drop .json or .txt here to load a work plan">
-      Drag & drop plan de travail (.json / .txt) here — Glisser déposer un plan (.json/.txt)
     </div>
   </section>
 
@@ -214,8 +190,8 @@ footer{margin-top:18px; color:var(--muted); font-size:13px; text-align:center}
     <div class="card">
       <strong id="timerTitle">Timer / Minuteur</strong>
       <div style="display:flex; gap:8px; align-items:center; margin-top:8px;">
-        <input id="timerMin" type="number" min="0" placeholder="min" style="width:80px">
-        <input id="timerSec" type="number" min="0" max="59" placeholder="sec" style="width:80px">
+        <input id="timerMin" type="number" min="0" placeholder="min" style="width:80px"/>
+        <input id="timerSec" type="number" min="0" max="59" placeholder="sec" style="width:80px"/>
         <button class="btn" id="startTimerBtn">Start / Démarrer</button>
         <button class="btn ghost" id="stopTimerBtn">Stop / Arrêter</button>
       </div>
@@ -225,7 +201,7 @@ footer{margin-top:18px; color:var(--muted); font-size:13px; text-align:center}
     <div class="card">
       <strong>Import / Export</strong>
       <div style="display:flex; gap:8px; margin-top:8px;">
-        <input id="fileInput" type="file" accept="application/json,text/plain" style="flex:1">
+        <input id="fileInput" type="file" accept="application/json,text/plain" style="flex:1"/>
       </div>
       <div class="muted tiny" style="margin-top:8px">Import .json to replace current list / Importer .json pour remplacer la liste courante</div>
     </div>
@@ -240,36 +216,35 @@ footer{margin-top:18px; color:var(--muted); font-size:13px; text-align:center}
   <div><strong id="saveToastText">Saved / Sauvegardé</strong><div class="muted tiny" id="saveToastTime">Now / Maintenant</div></div>
 </div>
 
-<!-- hover sound (short blip, base64 wav small) -->
+<!-- hover sound (small blip) -->
 <audio id="hoverSound" src="data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=" preload="auto"></audio>
 
-<footer style="width:100%; max-width:1200px; text-align:center; margin-top:18px" class="muted tiny">
+<footer style="width:100%; max-width:1200px; text-align:center; margin-top:18px" class="muted tiny" id="footerText">
   Classe-Pro — Liste de tâches · thème futuriste · sauvegarde locale
 </footer>
 
 <script>
 /* =========================
-   STATE & STORAGE (FR/EN comments)
+   CONFIG & STATE
    ========================= */
+const LANG_KEY = 'classepro_lang_v1';
 const STORAGE_KEY = 'classepro_v4_lists';
+
 let state = {
-  lists: {},          // listName: { people: [{name, tasks:[]}, ...], tasks: [taskName,...], message: '' }
-  currentList: null,  // active list name
+  lists: {}, currentList: null,
   stopwatch: { elapsed:0, running:false },
   timer: { remaining:0 }
 };
 
-/* =========================
-   UI references
-   ========================= */
+/* UI references */
 const listSelect = document.getElementById('listSelect');
 const newListName = document.getElementById('newListName');
 const createListBtn = document.getElementById('createListBtn');
 const renameListBtn = document.getElementById('renameListBtn');
 const deleteListBtn = document.getElementById('deleteListBtn');
 
-const studentNameInput = document.getElementById('studentNameInput');
-const addStudentBtn = document.getElementById('addStudentBtn');
+const personNameInput = document.getElementById('personNameInput');
+const addPersonBtn = document.getElementById('addPersonBtn');
 const taskNameInput = document.getElementById('taskNameInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const removeTaskBtn = document.getElementById('removeTaskBtn');
@@ -284,15 +259,118 @@ const saveMsgBtn = document.getElementById('saveMsgBtn');
 const clearMsgBtn = document.getElementById('clearMsgBtn');
 
 const fileInput = document.getElementById('fileInput');
-const dropArea = document.getElementById('dropArea');
 
 const hoverSound = document.getElementById('hoverSound');
 
-const langSelect = document.getElementById('langSelect');
+const langBtn = document.getElementById('langBtn');
+const langLabel = document.getElementById('langLabel');
+
 const fsBtn = document.getElementById('fsBtn');
 
+const swDisplay = document.getElementById('stopwatch');
+const showMsCheckbox = document.getElementById('showMs');
+
 /* =========================
-   UTIL: load / save state
+   TRANSLATIONS
+   ========================= */
+const TRANSLATIONS = {
+  fr: {
+    title: 'Classe-Pro — Liste de tâches',
+    subtitle: 'Interface locale · sauvegarde stylée · thème 2049.space',
+    export: 'Exporter',
+    imp: 'Importer',
+    clearAll: 'Effacer tout',
+    create: 'Créer',
+    rename: 'Renommer',
+    delete: 'Supprimer',
+    addPerson: 'Ajouter',
+    addTask: 'Ajouter tâche',
+    removeLast: 'Suppr. dernière',
+    personLabel: 'Personne',
+    actions: 'Actions',
+    progressLabel: 'Progress global',
+    msgTitle: 'Message du jour',
+    chronoTitle: 'Chronomètre',
+    timerTitle: 'Minuteur',
+    saveToast: 'Tâches sauvegardées',
+    savedNow: 'Maintenant',
+    planLoaded: 'Plan chargé',
+    importInvalid: 'Import invalide',
+    confirmDeleteList: 'Supprimer la liste',
+    giveName: 'Donne un nom',
+    enterDuration: 'Entrer une durée > 0',
+    timeUp: 'Temps écoulé !'
+  },
+  en: {
+    title: 'Classe-Pro — Task list',
+    subtitle: 'Local interface · stylish save · 2049.space theme',
+    export: 'Export',
+    imp: 'Import',
+    clearAll: 'Clear all',
+    create: 'Create',
+    rename: 'Rename',
+    delete: 'Delete',
+    addPerson: 'Add',
+    addTask: 'Add task',
+    removeLast: 'Remove last',
+    personLabel: 'Person',
+    actions: 'Actions',
+    progressLabel: 'Global progress',
+    msgTitle: 'Message of the day',
+    chronoTitle: 'Stopwatch',
+    timerTitle: 'Timer',
+    saveToast: 'Saved',
+    savedNow: 'Now',
+    planLoaded: 'Plan loaded',
+    importInvalid: 'Invalid import',
+    confirmDeleteList: 'Delete list',
+    giveName: 'Give a name',
+    enterDuration: 'Enter a duration > 0',
+    timeUp: 'Time is up!'
+  }
+};
+
+function currentLang(){ return localStorage.getItem(LANG_KEY) || 'fr'; }
+function setLang(l){
+  localStorage.setItem(LANG_KEY, l);
+  applyTranslations();
+}
+function t(key){ const lang = currentLang(); return (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) || TRANSLATIONS['fr'][key] || key; }
+
+function applyTranslations(){
+  const lang = currentLang();
+  // header
+  document.getElementById('titleMain').textContent = t('title');
+  document.getElementById('subtitle').textContent = t('subtitle');
+  // top buttons
+  document.getElementById('exportBtn').textContent = t('export') + ' / ' + (lang==='fr' ? 'Exporter' : 'Export');
+  document.getElementById('importBtn').textContent = t('imp') + ' / ' + (lang==='fr' ? 'Importer' : 'Import');
+  document.getElementById('clearAllBtn').textContent = t('clearAll') + ' / ' + (lang==='fr' ? 'Effacer tout' : 'Clear all');
+  // controls: create/rename/delete
+  createListBtn.textContent = t('create') + ' / ' + (lang==='fr' ? 'Créer' : 'Create');
+  renameListBtn.textContent = t('rename') + ' / ' + (lang==='fr' ? 'Renommer' : 'Rename');
+  deleteListBtn.textContent = t('delete') + ' / ' + (lang==='fr' ? 'Supprimer' : 'Delete');
+  addPersonBtn.textContent = t('addPerson') + ' / ' + (lang==='fr' ? 'Ajouter' : 'Add');
+  addTaskBtn.textContent = t('addTask') + ' / ' + (lang==='fr' ? 'Ajouter tâche' : 'Add task');
+  removeTaskBtn.textContent = t('removeLast') + ' / ' + (lang==='fr' ? 'Suppr. dernière' : 'Remove last');
+  document.getElementById('progressLabel').textContent = t('progressLabel') + ' / ' + (lang==='fr' ? 'Progress global' : 'Global progress');
+  document.getElementById('msgTitle').textContent = t('msgTitle');
+  document.getElementById('chronoTitle').textContent = t('chronoTitle');
+  document.getElementById('timerTitle').textContent = t('timerTitle');
+  document.getElementById('saveToastText').textContent = t('saveToast');
+  document.getElementById('saveToastTime').textContent = t('savedNow');
+  // footer
+  document.getElementById('footerText').textContent = t('title') + ' · ' + (lang==='fr' ? 'thème futuriste · sauvegarde locale' : 'futuristic theme · local save');
+  // language button label + emoji
+  langLabel.textContent = (lang === 'fr') ? 'FR' : 'EN';
+  langBtn.innerHTML = (lang === 'fr' ? '🇫🇷 ' : '🇬🇧 ') + '<span id="langLabel">'+langLabel.textContent+'</span>';
+  // re-render table texts
+  renderTable();
+  renderMessage();
+}
+
+/* =========================
+   Storage load/save
    ========================= */
 function loadState(){
   try{
@@ -301,7 +379,7 @@ function loadState(){
   }catch(e){ console.error('load', e); }
   if(!state.currentList || !state.lists[state.currentList]){
     const first = Object.keys(state.lists)[0] || 'Liste 1';
-    if(!state.lists[first]) state.lists[first] = { people:[], tasks:[], message:'Bienvenue' };
+    if(!state.lists[first]) state.lists[first] = { people:[], tasks:[], message: currentLang()==='fr' ? 'Bienvenue' : 'Welcome' };
     state.currentList = first;
     saveState(true);
   }
@@ -309,12 +387,13 @@ function loadState(){
 function saveState(silent=false){
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    showSaveToast(silent ? (lang() === 'fr' ? 'Sauvegarde auto' : 'Auto save') : (lang() === 'fr' ? 'Tâches sauvegardées' : 'Saved'));
+    if(!silent) showSaveToast(t('saveToast'));
+    else showSaveToast(t('saveToast'));
   }catch(e){ console.error('save', e); }
 }
 
 /* =========================
-   TOAST feedback
+   Save toast
    ========================= */
 const saveToast = document.getElementById('saveToast');
 const saveToastText = document.getElementById('saveToastText');
@@ -329,49 +408,20 @@ function showSaveToast(text){
 }
 
 /* =========================
-   LANGUAGE helper
-   ========================= */
-function lang(){ return langSelect.value || 'fr'; }
-function translateUI(){
-  const isFR = lang() === 'fr';
-  document.querySelector('h1').textContent = isFR ? 'Classe-Pro — Liste de tâches' : 'Classe-Pro — Task list';
-  document.getElementById('msgTitle').textContent = isFR ? 'Message du jour' : 'Message of the day';
-  document.getElementById('chronoTitle').textContent = isFR ? 'Chronomètre' : 'Stopwatch';
-  document.getElementById('timerTitle').textContent = isFR ? 'Minuteur' : 'Timer';
-  document.getElementById('progressLabel').textContent = isFR ? 'Progress global' : 'Global progress';
-  // buttons
-  document.querySelectorAll('.btn').forEach(b=>{
-    // keep manual labels (we don't auto-translate every custom text to avoid overriding)
-  });
-}
-
-/* =========================
-   Hover sound: attach to buttons except last (prevents noise on clearAll etc if desired)
+   Hover sound attach
    ========================= */
 function attachHoverSound(){
   const allBtns = Array.from(document.querySelectorAll('button'));
-  // exclude fsBtn (floating), keep others — still play on hover except last button in top-controls
-  const excluded = [fsBtn];
-  allBtns.forEach(btn=>{
-    if(excluded.includes(btn)) return;
-    btn.addEventListener('mouseenter', ()=>{ hoverSound.currentTime = 0; hoverSound.play().catch(()=>{}); });
+  allBtns.forEach(b => {
+    if(b === fsBtn) return; // exclude fullscreen button
+    b.addEventListener('mouseenter', ()=>{ hoverSound.currentTime = 0; hoverSound.play().catch(()=>{}); });
   });
 }
 
 /* =========================
-   Rendering: lists select + table
+   Render helpers & table
    ========================= */
-function refreshListSelect(){
-  listSelect.innerHTML = '';
-  Object.keys(state.lists).forEach(name=>{
-    const opt = document.createElement('option'); opt.value = name; opt.textContent = name;
-    listSelect.appendChild(opt);
-  });
-  listSelect.value = state.currentList;
-}
-
 function escapeHtml(str){ return String(str||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
 function countCheckedForTask(idx){
   const lst = state.lists[state.currentList];
   return lst.people.reduce((acc,p)=> acc + ((p.tasks && p.tasks[idx]) ? 1 : 0), 0);
@@ -392,27 +442,24 @@ function renderTable(){
   const lst = state.lists[state.currentList];
   if(!lst) return;
   listTable.innerHTML = '';
-
-  // header
   const thead = document.createElement('thead');
   const htr = document.createElement('tr');
-  const thName = document.createElement('th'); thName.textContent = lang() === 'fr' ? 'Personne' : 'Person';
+  const thName = document.createElement('th'); thName.textContent = currentLang()==='fr' ? 'Personne' : 'Person';
   htr.appendChild(thName);
   lst.tasks.forEach((t, idx)=>{
     const th = document.createElement('th');
     th.innerHTML = `${escapeHtml(t)}<div class="muted tiny" style="margin-top:6px">${countCheckedForTask(idx)}/${lst.people.length}</div>`;
     htr.appendChild(th);
   });
-  const thAct = document.createElement('th'); thAct.textContent = lang() === 'fr' ? 'Actions' : 'Actions';
+  const thAct = document.createElement('th'); thAct.textContent = currentLang()==='fr' ? 'Actions' : 'Actions';
   htr.appendChild(thAct);
   thead.appendChild(htr); listTable.appendChild(thead);
 
-  // body
   const tbody = document.createElement('tbody');
   lst.people.forEach((p, i)=>{
     const tr = document.createElement('tr');
     const tdName = document.createElement('td'); tdName.className = 'name-col';
-    tdName.innerHTML = `<div>${escapeHtml(p.name)}</div><div class="muted tiny">${completedCount(p)} / ${lst.tasks.length} ${lang()==='fr'?'complété':'completed'}</div>`;
+    tdName.innerHTML = `<div>${escapeHtml(p.name)}</div><div class="muted tiny">${completedCount(p)} / ${lst.tasks.length} ${currentLang()==='fr'?'complété':'completed'}</div>`;
     tr.appendChild(tdName);
 
     lst.tasks.forEach((t,j)=>{
@@ -427,9 +474,9 @@ function renderTable(){
     });
 
     const tdAct = document.createElement('td');
-    const delBtn = document.createElement('button'); delBtn.className = 'btn ghost small'; delBtn.textContent = lang()==='fr' ? 'Suppr' : 'Del';
+    const delBtn = document.createElement('button'); delBtn.className = 'btn ghost small'; delBtn.textContent = currentLang()==='fr' ? 'Suppr' : 'Del';
     delBtn.addEventListener('click', ()=>{
-      if(confirm((lang()==='fr' ? 'Supprimer ' : 'Delete ') + `"${p.name}" ?`)){
+      if(confirm((currentLang()==='fr' ? 'Supprimer ' : 'Delete ') + `"${p.name}" ?`)){
         lst.people.splice(i,1); renderTable(); saveState();
       }
     });
@@ -437,101 +484,83 @@ function renderTable(){
     tr.appendChild(tdAct);
     tbody.appendChild(tr);
   });
-
   listTable.appendChild(tbody);
   updateProgress();
 }
 
 /* =========================
-   Actions: create/rename/delete list
+   Actions: lists CRUD
    ========================= */
 createListBtn.addEventListener('click', ()=>{
-  const name = newListName.value.trim() || prompt(lang()==='fr' ? 'Nom de la nouvelle liste ?' : 'Name for new list?','Liste');
+  const name = newListName.value.trim() || prompt(currentLang()==='fr' ? 'Nom de la nouvelle liste ?' : 'Name for new list?','Liste');
   if(!name) return;
-  if(state.lists[name]) return alert(lang()==='fr' ? 'Nom déjà existant' : 'Name already exists');
-  state.lists[name] = { people:[], tasks:[], message: lang()==='fr' ? 'Tapez votre message ici' : 'Type your message here' };
-  state.currentList = name;
-  newListName.value = '';
-  refreshListSelect(); renderTable(); renderMessage(); saveState();
+  if(state.lists[name]) return alert(currentLang()==='fr' ? 'Nom déjà existant' : 'Name already exists');
+  state.lists[name] = { people:[], tasks:[], message: currentLang()==='fr' ? 'Tapez votre message ici' : 'Type your message here' };
+  state.currentList = name; newListName.value=''; refreshListSelect(); renderTable(); renderMessage(); saveState();
 });
 
 renameListBtn.addEventListener('click', ()=>{
   const old = state.currentList;
-  const name = prompt(lang()==='fr' ? 'Nouveau nom pour la liste' : 'New name for list', old);
-  if(!name || name === old) return;
-  if(state.lists[name]) return alert(lang()==='fr' ? 'Nom déjà utilisé' : 'Name already used');
-  state.lists[name] = state.lists[old];
-  delete state.lists[old];
-  state.currentList = name;
-  refreshListSelect(); renderTable(); saveState();
+  const name = prompt(currentLang()==='fr' ? 'Nouveau nom pour la liste' : 'New name for list', old);
+  if(!name || name===old) return;
+  if(state.lists[name]) return alert(currentLang()==='fr' ? 'Nom déjà utilisé' : 'Name already used');
+  state.lists[name] = state.lists[old]; delete state.lists[old]; state.currentList = name; refreshListSelect(); renderTable(); saveState();
 });
 
 deleteListBtn.addEventListener('click', ()=>{
   const c = state.currentList;
-  if(!confirm((lang()==='fr' ? 'Supprimer la liste ' : 'Delete list ') + `"${c}" ?`)) return;
-  delete state.lists[c];
-  const names = Object.keys(state.lists);
-  state.currentList = names[0] || null;
-  if(!state.currentList){
-    state.lists['Liste 1'] = { people:[], tasks:[], message: lang()==='fr' ? 'Bienvenue' : 'Welcome' };
-    state.currentList = 'Liste 1';
-  }
+  if(!confirm((currentLang()==='fr' ? 'Supprimer la liste ' : 'Delete list ') + `"${c}" ?`)) return;
+  delete state.lists[c]; const names = Object.keys(state.lists); state.currentList = names[0] || null;
+  if(!state.currentList){ state.lists['Liste 1'] = { people:[], tasks:[], message: currentLang()==='fr' ? 'Bienvenue' : 'Welcome' }; state.currentList = 'Liste 1'; }
   refreshListSelect(); renderTable(); saveState();
 });
 
-listSelect.addEventListener('change', ()=>{
-  state.currentList = listSelect.value; renderTable(); renderMessage(); saveState(true);
-});
+listSelect.addEventListener('change', ()=>{ state.currentList = listSelect.value; renderTable(); renderMessage(); saveState(true); });
+
+function refreshListSelect(){
+  listSelect.innerHTML = '';
+  Object.keys(state.lists).forEach(name=>{
+    const opt = document.createElement('option'); opt.value = name; opt.textContent = name; listSelect.appendChild(opt);
+  });
+  listSelect.value = state.currentList;
+}
 
 /* =========================
    Actions: people & tasks
    ========================= */
-addStudentBtn.addEventListener('click', ()=>{
-  const name = studentNameInput.value.trim();
-  if(!name) return alert(lang()==='fr' ? 'Donne un nom' : 'Give a name');
+addPersonBtn.addEventListener('click', ()=>{
+  const name = personNameInput.value.trim();
+  if(!name) return alert(currentLang()==='fr' ? 'Donne un nom' : 'Give a name');
   const lst = state.lists[state.currentList];
   lst.people.push({ name, tasks: Array(lst.tasks.length).fill(false) });
-  studentNameInput.value = ''; renderTable(); saveState();
+  personNameInput.value=''; renderTable(); saveState();
 });
+
 addTaskBtn.addEventListener('click', ()=>{
-  const t = taskNameInput.value.trim() || prompt(lang()==='fr' ? 'Nom de la tâche ?' : 'Task name?','Tâche');
-  if(!t) return;
-  const lst = state.lists[state.currentList];
-  lst.tasks.push(t);
-  lst.people.forEach(p=> p.tasks.push(false));
-  taskNameInput.value = ''; renderTable(); saveState();
+  const t = taskNameInput.value.trim() || prompt(currentLang()==='fr' ? 'Nom de la tâche ?' : 'Task name?','Tâche');
+  if(!t) return; const lst = state.lists[state.currentList];
+  lst.tasks.push(t); lst.people.forEach(p=> p.tasks.push(false)); taskNameInput.value=''; renderTable(); saveState();
 });
+
 removeTaskBtn.addEventListener('click', ()=>{
   const lst = state.lists[state.currentList];
-  if(lst.tasks.length === 0) return;
-  if(!confirm((lang()==='fr' ? 'Supprimer la dernière tâche ' : 'Remove last task ') + `"${lst.tasks[lst.tasks.length-1]}" ?`)) return;
-  lst.tasks.pop(); lst.people.forEach(p=>p.tasks.pop()); renderTable(); saveState();
+  if(lst.tasks.length===0) return;
+  if(!confirm((currentLang()==='fr' ? 'Supprimer la dernière tâche ' : 'Remove last task ') + `"${lst.tasks[lst.tasks.length-1]}" ?`)) return;
+  lst.tasks.pop(); lst.people.forEach(p=> p.tasks.pop()); renderTable(); saveState();
 });
 
 /* =========================
    Message board
    ========================= */
-saveMsgBtn.addEventListener('click', ()=>{
-  const lst = state.lists[state.currentList];
-  lst.message = messageInput.value;
-  renderMessage(); saveState();
-});
-clearMsgBtn.addEventListener('click', ()=>{
-  const lst = state.lists[state.currentList];
-  lst.message = ''; messageInput.value = ''; renderMessage(); saveState();
-});
-function renderMessage(){
-  const lst = state.lists[state.currentList];
-  displayMessage.textContent = lst.message || (lang()==='fr' ? 'Tapez un message...' : 'Type a message...');
-  messageInput.value = lst.message || '';
-}
+saveMsgBtn.addEventListener('click', ()=>{ const lst = state.lists[state.currentList]; lst.message = messageInput.value; renderMessage(); saveState(); });
+clearMsgBtn.addEventListener('click', ()=>{ const lst = state.lists[state.currentList]; lst.message=''; messageInput.value=''; renderMessage(); saveState(); });
+function renderMessage(){ const lst = state.lists[state.currentList]; displayMessage.textContent = lst.message || (currentLang()==='fr' ? 'Tapez un message...' : 'Type a message...'); messageInput.value = lst.message || ''; }
 
 /* =========================
-   EXPORT / IMPORT (file input)
+   Export / Import (file input)
    ========================= */
 document.getElementById('exportBtn').addEventListener('click', ()=>{
-  const dataStr = JSON.stringify(state, null, 2);
-  const blob = new Blob([dataStr], { type:'application/json' });
+  const dataStr = JSON.stringify(state, null, 2); const blob = new Blob([dataStr], { type:'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'classepro-list-export.json'; a.click(); URL.revokeObjectURL(a.href);
 });
 
@@ -540,202 +569,97 @@ document.getElementById('importBtn').addEventListener('click', ()=> fileInput.cl
 fileInput.addEventListener('change', (e)=>{
   const f = e.target.files[0]; if(!f) return;
   const reader = new FileReader();
-  reader.onload = () => {
-    // As requested: replace current list directly with file content (no confirmation)
+  reader.onload = ()=> {
     try{
-      const text = reader.result;
-      // try JSON parse; if JSON contains expected shape, replace entire state; else try to load as single list
-      const parsed = JSON.parse(text);
-      if(parsed && parsed.lists){
-        state = parsed;
-        if(!state.currentList) state.currentList = Object.keys(state.lists)[0] || null;
-      } else if(parsed && (parsed.people || parsed.tasks)){
-        // if single list provided, use it as current list (replace current list content)
-        state.lists[state.currentList] = parsed;
-      } else {
-        // not expected, ignore
-        alert(lang()==='fr' ? 'Fichier JSON non reconnu' : 'Unrecognized JSON file');
-        return;
-      }
+      const parsed = JSON.parse(reader.result);
+      if(parsed && parsed.lists){ state = parsed; if(!state.currentList) state.currentList = Object.keys(state.lists)[0] || null; }
+      else if(parsed && (parsed.people || parsed.tasks)){ state.lists[state.currentList] = parsed; }
+      else { alert(currentLang()==='fr' ? 'Fichier JSON non reconnu' : 'Unrecognized JSON file'); return; }
       refreshListSelect(); renderTable(); renderMessage(); saveState(true);
+      showSaveToast(t('planLoaded'));
     }catch(err){
-      alert(lang()==='fr' ? 'Import invalide' : 'Invalid import');
+      alert(currentLang()==='fr' ? 'Import invalide' : 'Invalid import');
     }
   };
   reader.readAsText(f);
 });
 
 /* =========================
-   Drag & drop: one plan at a time (replace current list) — direct load (no confirmation)
-   ========================= */
-function handleDropFile(file){
-  const reader = new FileReader();
-  reader.onload = () => {
-    const text = reader.result;
-    // attempt parse JSON, else treat as plain text and create a list with lines as tasks
-    try{
-      const parsed = JSON.parse(text);
-      if(parsed && (parsed.lists || parsed.people || parsed.tasks)){
-        // if entire app JSON, replace state; else if list-like, replace current list
-        if(parsed.lists){
-          state = parsed;
-          if(!state.currentList) state.currentList = Object.keys(state.lists)[0] || null;
-        } else {
-          // treat as single list shape
-          state.lists[state.currentList] = parsed;
-        }
-      } else {
-        // fallback: treat as plain text tasks (one per line)
-        const lines = text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-        // replace list tasks with lines, clear people
-        state.lists[state.currentList] = { people:[], tasks:lines, message: lang()==='fr' ? 'Plan importé' : 'Imported plan' };
-      }
-      refreshListSelect(); renderTable(); renderMessage(); saveState(true);
-      showSaveToast(lang()==='fr' ? 'Plan chargé' : 'Plan loaded');
-    }catch(e){
-      // plain text fallback
-      const lines = text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-      state.lists[state.currentList] = { people:[], tasks:lines, message: lang()==='fr' ? 'Plan importé' : 'Imported plan' };
-      refreshListSelect(); renderTable(); renderMessage(); saveState(true);
-      showSaveToast(lang()==='fr' ? 'Plan chargé (texte)' : 'Plan loaded (text)');
-    }
-  };
-  reader.readAsText(file);
-}
-
-// drag & drop UI
-;['dragenter','dragover'].forEach(evt=>{
-  dropArea.addEventListener(evt, e=>{ e.preventDefault(); dropArea.classList.add('dragover'); });
-});
-;['dragleave','drop','dragend'].forEach(evt=>{
-  dropArea.addEventListener(evt, e=>{
-    e.preventDefault();
-    if(evt === 'drop'){
-      dropArea.classList.remove('dragover');
-      const dt = e.dataTransfer;
-      if(!dt) return;
-      const f = dt.files[0];
-      if(!f) return;
-      handleDropFile(f); // replace current list directly
-    } else {
-      dropArea.classList.remove('dragover');
-    }
-  });
-});
-
-/* =========================
-   Clear all (localStorage) — keeps one default list
-   ========================= */
-document.getElementById('clearAllBtn').addEventListener('click', ()=>{
-  if(!confirm(lang()==='fr' ? 'Effacer toutes les données locales (localStorage) ?' : 'Clear all local data?')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  state = { lists:{ 'Liste 1': { people:[], tasks:[], message: lang()==='fr' ? 'Bienvenue' : 'Welcome' } }, currentList: 'Liste 1', stopwatch:{elapsed:0, running:false}, timer:{remaining:0} };
-  loadState(); refreshListSelect(); renderTable(); renderMessage(); saveState(true);
-});
-
-/* =========================
-   Stopwatch (chronomètre) with ms option
+   Stopwatch
    ========================= */
 let swInterval = null;
-const swDisplay = document.getElementById('stopwatch');
-const showMsCheckbox = document.getElementById('showMs');
-
 function formatTime(msTotal, showMs){
   const ms = msTotal % 1000;
-  const totalSec = Math.floor(msTotal / 1000);
-  const h = Math.floor(totalSec / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
-  const s = totalSec % 60;
-  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}${showMs ? '.' + String(ms).padStart(3,'0') : ''}`;
+  const totalSec = Math.floor(msTotal/1000);
+  const h = Math.floor(totalSec/3600);
+  const m = Math.floor((totalSec%3600)/60);
+  const s = totalSec%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}${showMs?'.'+String(ms).padStart(3,'0'):''}`;
 }
-
 document.getElementById('swStart').addEventListener('click', ()=>{
   if(state.stopwatch.running) return;
-  state.stopwatch.running = true;
-  let start = Date.now() - state.stopwatch.elapsed;
-  swInterval = setInterval(()=>{
-    state.stopwatch.elapsed = Date.now() - start;
-    swDisplay.textContent = formatTime(state.stopwatch.elapsed, showMsCheckbox.checked);
-  }, 33);
+  state.stopwatch.running = true; let start = Date.now() - state.stopwatch.elapsed;
+  swInterval = setInterval(()=>{ state.stopwatch.elapsed = Date.now() - start; swDisplay.textContent = formatTime(state.stopwatch.elapsed, showMsCheckbox.checked); }, 33);
 });
-document.getElementById('swStop').addEventListener('click', ()=>{
-  state.stopwatch.running = false; clearInterval(swInterval); saveState(true);
-});
-document.getElementById('swReset').addEventListener('click', ()=>{
-  state.stopwatch.elapsed = 0; swDisplay.textContent = formatTime(0, showMsCheckbox.checked);
-  if(swInterval){ clearInterval(swInterval); state.stopwatch.running = false; } saveState(true);
-});
+document.getElementById('swStop').addEventListener('click', ()=>{ state.stopwatch.running = false; clearInterval(swInterval); saveState(true); });
+document.getElementById('swReset').addEventListener('click', ()=>{ state.stopwatch.elapsed = 0; swDisplay.textContent = formatTime(0, showMsCheckbox.checked); if(swInterval){ clearInterval(swInterval); state.stopwatch.running=false; } saveState(true); });
 
 /* =========================
-   Timer (countdown)
+   Timer
    ========================= */
 let timerInterval = null;
 const countdown = document.getElementById('countdown');
-function updateTimerDisplay(){
-  const total = Math.max(0, Math.ceil(state.timer.remaining / 1000));
-  const mm = Math.floor(total / 60); const ss = total % 60;
-  countdown.textContent = `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
-}
-
+function updateTimerDisplay(){ const total = Math.max(0, Math.ceil(state.timer.remaining/1000)); const mm = Math.floor(total/60); const ss = total%60; countdown.textContent = `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`; }
 document.getElementById('startTimerBtn').addEventListener('click', ()=>{
-  const m = parseInt(document.getElementById('timerMin').value) || 0;
-  const s = parseInt(document.getElementById('timerSec').value) || 0;
-  state.timer.remaining = (m * 60 + s) * 1000;
-  updateTimerDisplay();
-  if(timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(()=>{
-    state.timer.remaining -= 1000;
-    if(state.timer.remaining <= 0){ clearInterval(timerInterval); state.timer.remaining = 0; alert(lang()==='fr' ? 'Temps écoulé !' : 'Time is up!'); saveState(true); }
-    updateTimerDisplay();
-  }, 1000);
+  const m = parseInt(document.getElementById('timerMin').value) || 0; const s = parseInt(document.getElementById('timerSec').value) || 0;
+  const ms = (m*60 + s)*1000; if(ms<=0){ alert(currentLang()==='fr'?t('enterDuration'):t('enterDuration')); return; }
+  state.timer.remaining = ms; updateTimerDisplay(); if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{ state.timer.remaining -= 1000; if(state.timer.remaining<=0){ clearInterval(timerInterval); state.timer.remaining=0; alert(currentLang()==='fr'?t('timeUp'):t('timeUp')); saveState(true); } updateTimerDisplay(); }, 1000);
 });
 document.getElementById('stopTimerBtn').addEventListener('click', ()=>{ if(timerInterval) clearInterval(timerInterval); saveState(true); });
 
 /* =========================
-   Fullscreen button (top-right)
+   Fullscreen toggle
    ========================= */
 fsBtn.addEventListener('click', async ()=>{
   try{
-    if(!document.fullscreenElement){
-      await document.documentElement.requestFullscreen();
-    } else {
-      await document.exitFullscreen();
-    }
-  }catch(err){
-    alert((lang()==='fr' ? 'Erreur plein écran: ' : 'Fullscreen error: ') + err.message);
-  }
+    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+    else await document.exitFullscreen();
+  }catch(err){ alert((currentLang()==='fr'?'Erreur plein écran: ':'Fullscreen error: ')+err.message); }
 });
 
 /* =========================
-   Hover sound & attach (except fsBtn)
+   Language button behavior
+   ========================= */
+langBtn.addEventListener('click', ()=>{
+  const newLang = currentLang() === 'fr' ? 'en' : 'fr';
+  setLang(newLang);
+});
+
+/* =========================
+   Attach hover sound & other init helpers
    ========================= */
 attachHoverSound();
 
 /* =========================
-   Lang select change
-   ========================= */
-langSelect.addEventListener('change', ()=>{ translateUI(); renderTable(); renderMessage(); });
-
-/* =========================
-   Init: load state and render everything
+   Init: load & render
    ========================= */
 loadState();
 refreshListSelect();
 renderTable();
 renderMessage();
-translateUI();
+applyTranslations(); // sets UI language from localStorage or default
+attachHoverSound();
 
-// autosave every 6s (silent)
+// autosave (silent)
 setInterval(()=> saveState(true), 6000);
-
-// save on visibility change
 document.addEventListener('visibilitychange', ()=> { if(document.hidden) saveState(true); });
 
 // keyboard shortcuts for quick add
-studentNameInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter'){ e.preventDefault(); addStudentBtn.click(); } });
+personNameInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter'){ e.preventDefault(); addPersonBtn.click(); } });
 taskNameInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter'){ e.preventDefault(); addTaskBtn.click(); } });
 
-/* reset file input value after import */
+// reset file input after import
 fileInput.addEventListener('change', ()=> setTimeout(()=> { fileInput.value = ''; }, 300));
 </script>
 </body>
